@@ -8,14 +8,15 @@ const supabase = createClient(
 
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await context.params
   const body = await request.json()
   
   const { error } = await supabase
     .from('clientes')
     .update(body)
-    .eq('id', params.id)
+    .eq('id', id)
   
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 })
@@ -26,12 +27,14 @@ export async function PUT(
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await context.params
+  
   const { error } = await supabase
     .from('clientes')
     .delete()
-    .eq('id', params.id)
+    .eq('id', id)
   
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 })
