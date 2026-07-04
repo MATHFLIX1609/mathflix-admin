@@ -2,10 +2,12 @@
   "ExpandedNodes": [
     "",
     "\\app",
-    "\\app\\api",
+    "\\app\\api\\player_api.php",
     "\\app\\api\\stream",
-    "\\app\\api\\stream\\[username]"
+    "\\app\\api\\stream\\[username]",
+    "\\app\\dashboard",
+    "\\app\\lib"
   ],
-  "SelectedNode": "\\app\\api\\stream\\[username]\\route.ts",
+  "SelectedNode": "\\app\\dashboard\\page.tsx",
   "PreviewInSolutionExplorer": false
 }
