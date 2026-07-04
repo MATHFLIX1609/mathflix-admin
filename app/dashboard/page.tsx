@@ -1,4 +1,4 @@
-import { supabase } from '../lib/supabase'
+import { createSupabaseClient } from '../lib/supabase'  // ← Cambió
 import { BotonCopiar } from './BotonCopiar'
 
 export const dynamic = 'force-dynamic'
@@ -9,6 +9,7 @@ export default async function Dashboard({
   searchParams: Promise<{ edit?: string }>
 }) {
   const { edit } = await searchParams
+  const supabase = createSupabaseClient()  // ← Lo creas aquí adentro
 
   const { data: usuarios, error } = await supabase
     .from('usuarios')
