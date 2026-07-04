@@ -21,6 +21,13 @@ type Cliente = {
   created_at: string
 }
 
+type InputProps = {
+  label: string
+  value: string
+  onChange: (value: string) => void
+  type?: string
+}
+
 export default function Dashboard() {
   const [clientes, setClientes] = useState<Cliente[]>([])
   const [loading, setLoading] = useState(true)
@@ -46,41 +53,40 @@ export default function Dashboard() {
 
   const guardarCliente = async () => {
     if (!editando) return
-    
+
     await fetch(`/api/clientes/${editando.id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(editando)
     })
-    
+
     setEditando(null)
     cargarClientes()
   }
 
   const generarUrlEspejo = (url: string) => {
-    // Cambia el dominio pero mantiene usuario/clave
     return url.replace('tv.zeuspro.xyz:2052', 'fivetv.org:25461')
   }
 
   return (
-    <div style={{ 
-      minHeight: '100vh', 
-      backgroundColor: '#0f172a', 
+    <div style={{
+      minHeight: '100vh',
+      backgroundColor: '#0f172a',
       color: 'white',
       fontFamily: 'sans-serif',
       padding: '20px'
     }}>
       <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
-        <div style={{ 
-          display: 'flex', 
-          justifyContent: 'space-between', 
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
           alignItems: 'center',
           marginBottom: '30px'
         }}>
           <h1 style={{ fontSize: '28px', fontWeight: 'bold' }}>
             Mathflix Admin - Clientes
           </h1>
-          <button 
+          <button
             onClick={cerrarSesion}
             style={{
               backgroundColor: '#dc2626',
@@ -96,8 +102,8 @@ export default function Dashboard() {
           </button>
         </div>
 
-        <div style={{ 
-          backgroundColor: 'white', 
+        <div style={{
+          backgroundColor: 'white',
           borderRadius: '12px',
           overflow: 'hidden'
         }}>
@@ -115,18 +121,20 @@ export default function Dashboard() {
               </tr>
             </thead>
             <tbody>
-              {loading ? (
+              {loading? (
                 <tr><td colSpan={8} style={tdStyle}>Cargando...</td></tr>
+              ) : clientes.length === 0? (
+                <tr><td colSpan={8} style={{...tdStyle, textAlign: 'center' }}>No hay clientes</td></tr>
               ) : clientes.map(cliente => (
                 <tr key={cliente.id} style={{ borderBottom: '1px solid #e2e8f0' }}>
                   <td style={tdStyle}>{cliente.nombre_cliente}</td>
                   <td style={tdStyle}>{cliente.username}</td>
-                  <td style={{ ...tdStyle, maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  <td style={{...tdStyle, maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                     <a href={cliente.url_completa} target="_blank" style={{ color: '#3b82f6' }}>
                       {cliente.url_completa}
                     </a>
                   </td>
-                  <td style={{ ...tdStyle, maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  <td style={{...tdStyle, maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                     <a href={generarUrlEspejo(cliente.url_completa)} target="_blank" style={{ color: '#8b5cf6' }}>
                       {generarUrlEspejo(cliente.url_completa)}
                     </a>
@@ -137,17 +145,17 @@ export default function Dashboard() {
                   </td>
                   <td style={tdStyle}>
                     <span style={{
-                      backgroundColor: cliente.activo ? '#dcfce7' : '#fee2e2',
-                      color: cliente.activo ? '#166534' : '#991b1b',
+                      backgroundColor: cliente.activo? '#dcfce7' : '#fee2e2',
+                      color: cliente.activo? '#166534' : '#991b1b',
                       padding: '4px 12px',
                       borderRadius: '12px',
                       fontSize: '14px'
                     }}>
-                      {cliente.activo ? 'Activo' : 'Inactivo'}
+                      {cliente.activo? 'Activo' : 'Inactivo'}
                     </span>
                   </td>
                   <td style={tdStyle}>
-                    <button 
+                    <button
                       onClick={() => setEditando(cliente)}
                       style={{
                         backgroundColor: '#3b82f6',
@@ -168,27 +176,26 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Modal Editar */}
       {editando && (
         <div style={modalOverlay}>
           <div style={modalContent}>
             <h2 style={{ fontSize: '20px', marginBottom: '20px', color: '#000' }}>
               Editar Cliente
             </h2>
-            
-            <Input label="Nombre" value={editando.nombre_cliente} 
-              onChange={v => setEditando({...editando, nombre_cliente: v})} />
-            <Input label="Usuario" value={editando.username} 
-              onChange={v => setEditando({...editando, username: v})} />
-            <Input label="Password" value={editando.password} 
-              onChange={v => setEditando({...editando, password: v})} />
-            <Input label="URL Completa" value={editando.url_completa} 
-              onChange={v => setEditando({...editando, url_completa: v})} />
-            <Input label="Conexiones" type="number" value={editando.numero_conexiones.toString()} 
-              onChange={v => setEditando({...editando, numero_conexiones: parseInt(v)})} />
-            <Input label="Vencimiento" type="date" value={editando.vencimiento} 
-              onChange={v => setEditando({...editando, vencimiento: v})} />
-            
+
+            <Input label="Nombre" value={editando.nombre_cliente}
+              onChange={(v: string) => setEditando({...editando, nombre_cliente: v})} />
+            <Input label="Usuario" value={editando.username}
+              onChange={(v: string) => setEditando({...editando, username: v})} />
+            <Input label="Password" value={editando.password}
+              onChange={(v: string) => setEditando({...editando, password: v})} />
+            <Input label="URL Completa" value={editando.url_completa}
+              onChange={(v: string) => setEditando({...editando, url_completa: v})} />
+            <Input label="Conexiones" type="number" value={editando.numero_conexiones.toString()}
+              onChange={(v: string) => setEditando({...editando, numero_conexiones: parseInt(v) || 0})} />
+            <Input label="Vencimiento" type="date" value={editando.vencimiento.split('T')[0]}
+              onChange={(v: string) => setEditando({...editando, vencimiento: v})} />
+
             <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
               <button onClick={guardarCliente} style={btnPrimary}>Guardar</button>
               <button onClick={() => setEditando(null)} style={btnSecondary}>Cancelar</button>
@@ -223,7 +230,8 @@ const modalOverlay: React.CSSProperties = {
   backgroundColor: 'rgba(0,0,0,0.5)',
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'center'
+  justifyContent: 'center',
+  zIndex: 50
 }
 
 const modalContent: React.CSSProperties = {
@@ -242,7 +250,8 @@ const btnPrimary: React.CSSProperties = {
   padding: '10px',
   border: 'none',
   borderRadius: '6px',
-  cursor: 'pointer'
+  cursor: 'pointer',
+  fontWeight: 'bold'
 }
 
 const btnSecondary: React.CSSProperties = {
@@ -252,13 +261,14 @@ const btnSecondary: React.CSSProperties = {
   padding: '10px',
   border: 'none',
   borderRadius: '6px',
-  cursor: 'pointer'
+  cursor: 'pointer',
+  fontWeight: 'bold'
 }
 
-function Input({ label, value, onChange, type = 'text' }: any) {
+function Input({ label, value, onChange, type = 'text' }: InputProps) {
   return (
     <div style={{ marginBottom: '16px' }}>
-      <label style={{ display: 'block', marginBottom: '6px', color: '#334155', fontSize: '14px' }}>
+      <label style={{ display: 'block', marginBottom: '6px', color: '#334155', fontSize: '14px', fontWeight: '500' }}>
         {label}
       </label>
       <input
