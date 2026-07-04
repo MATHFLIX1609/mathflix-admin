@@ -1,0 +1,11 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\app",
+    "\\app\\api",
+    "\\app\\api\\stream",
+    "\\app\\api\\stream\\[username]"
+  ],
+  "SelectedNode": "\\app\\api\\stream\\[username]\\route.ts",
+  "PreviewInSolutionExplorer": false
+}
