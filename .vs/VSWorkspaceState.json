@@ -2,7 +2,8 @@
   "ExpandedNodes": [
     "",
     "\\app",
-    "\\app\\dashboard"
+    "\\app\\dashboard",
+    "\\app\\login"
   ],
   "SelectedNode": "\\app\\dashboard\\page.tsx",
   "PreviewInSolutionExplorer": false
