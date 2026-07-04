@@ -2,9 +2,11 @@
   "ExpandedNodes": [
     "",
     "\\app",
-    "\\app\\dashboard",
+    "\\app\\api",
+    "\\app\\api\\logout",
+    "\\app\\lib",
     "\\app\\login"
   ],
-  "SelectedNode": "\\app\\dashboard\\page.tsx",
+  "SelectedNode": "\\app\\api\\logout\\route.ts",
   "PreviewInSolutionExplorer": false
 }
